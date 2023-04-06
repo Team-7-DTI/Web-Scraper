@@ -7,6 +7,8 @@ from bs4 import BeautifulSoup as BS
 
 reviewList = []
 
+# a function that goes through the pages and makes the soup
+
 
 def get_soup(url):
     '''This function goes through the pages and makes the soup
@@ -22,7 +24,7 @@ def get_soup(url):
     # pass the soup to get_review_text function
     get_review_row(soup)
 
-    if len(reviewList) < 31:
+    if len(reviewList) < 30:
         # find the next page button
         next_page_url = ""
         buttons = soup.find_all('a', {'class': 'btn-sm'})
@@ -34,15 +36,18 @@ def get_soup(url):
     else:
         return
 
+# a function that gets the review text
+
 
 def get_review_row(soup):
     ''' This function finds all the reviews rows in the page and
     passes them to get_review_info function
     takes the soup as parameter and returns nothing
     '''
+    # print("in get_review_row function of reviewCollector.py")
     reviews_row = soup.find_all('div', {'class': 'review-row'})
     for review in reviews_row:
-        if len(reviewList) < 31:
+        if len(reviewList) < 30:
             get_review_info(review)
         else:
             break
@@ -53,6 +58,7 @@ def get_review_info(review):
     ''' This function finds the author name, outlet name and the external url
     takes the review as parameter and returns nothing
     '''
+    # print("in get_review_info function of reviewCollector.py")
     author_name_div = review.find('app-author-list', {'class': 'author-name'})
     # if author_name_div is not None find the text
     if author_name_div is not None:
@@ -74,13 +80,34 @@ def get_review_info(review):
         if p.text == "Read full review":
             read_full_review_href = p.find('a')['href']
             external_url = read_full_review_href
-            # print(read_full_review_href)
+            # print("got a usable external url")
             break
     if external_url is None:
+        # print("No usable external URL found")
         return
     # print(author_name, outlet_name, external_url, sep=" | ")
-    temp = [author_name, outlet_name, external_url]
-    reviewList.append(temp)
+
+    # check the connection status of the url
+    if checkConnection(external_url):
+        # print("Connection Succesful, appending list")
+        reviewList.append([author_name, outlet_name, external_url])
+    # else:
+        # print("Connection Failed, Trying another URL")
+
+
+def checkConnection(url):
+    '''This function checks the connection status of the url
+    if the connection is successful, it returns True
+    else it returns False'''
+    # print("Checking connection status of", url)
+    try:
+        r = requests.get(url)
+        if r.status_code >= 200 and r.status_code < 400:
+            return True
+        else:
+            return False
+    except:
+        return False
 
 
 def main(url):
@@ -90,5 +117,16 @@ def main(url):
     and returns the list of reviews.
     each item in the list is a list of the form [author_name, outlet_name, external_url]'''
     get_soup(url)
-    print("program executed successfully")
+    print("Collected reviews")
     return reviewList
+
+
+if __name__ == "__main__":
+    url = "https://opencritic.com/game/8525/cyberpunk-2077/reviews"
+    print("Running reviewCollector.py")
+    reviewList = main(url)
+    i = 1
+    for review in reviewList:
+        print(i, review)
+        i += 1
+    print("Done")
