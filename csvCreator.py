@@ -36,25 +36,25 @@ def get_review_text(soup):
     for review in reviews:
         text = review.text
         textBuffer += text
-    with open('text.txt', 'w', encoding='UTF-16') as file:
-        file.write(textBuffer)
     return textBuffer
 
 
-def fileCreator(fileName, reviewList):
+def fileCreator(gameName, reviewList):
     ''' a function that creates a csv file with the review data
     parameters:
     fileName: the name of the file
     textBuffer: the text buffer
     '''
-    # print("in fileCreator function of csvCreator.py")
-    with open(fileName, "w", encoding='UTF-8', newline='') as file:
-        header = ["Author", "Outlet", "URL", "Review"]
+    fileName = "data.csv"
+    print("in fileCreator function of csvCreator.py")
+    with open(fileName, "w", encoding='utf-8-sig', newline='') as file:
+        header = ["Game", "Author", "Outlet", "URL", "Review"]
         csv_writer = writer(file)
         csv_writer.writerow(header)
         for review in reviewList:
             textBuffer = get_soup(review[2])
-            csv_writer.writerow([review[0], review[1], review[2], textBuffer])
+            csv_writer.writerow(
+                [gameName, review[0], review[1], review[2], textBuffer])
     return
 
 
@@ -65,9 +65,8 @@ def main(gameName, reviewList):
     reviewList: a list of reviews
     returns: nothing
     '''
-    # print("in main function of csvCreator.py")
-    fileName = gameName + ".csv"
-    fileCreator(fileName, reviewList)
+    print("in main function of csvCreator.py")
+    fileCreator(gameName, reviewList)
     return
 
 

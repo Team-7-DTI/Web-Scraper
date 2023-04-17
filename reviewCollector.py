@@ -44,7 +44,7 @@ def get_review_row(soup):
     passes them to get_review_info function
     takes the soup as parameter and returns nothing
     '''
-    # print("in get_review_row function of reviewCollector.py")
+    print("in get_review_row function of reviewCollector.py")
     reviews_row = soup.find_all('div', {'class': 'review-row'})
     for review in reviews_row:
         if len(reviewList) < 30:
@@ -58,7 +58,7 @@ def get_review_info(review):
     ''' This function finds the author name, outlet name and the external url
     takes the review as parameter and returns nothing
     '''
-    # print("in get_review_info function of reviewCollector.py")
+    print("in get_review_info function of reviewCollector.py")
     author_name_div = review.find('app-author-list', {'class': 'author-name'})
     # if author_name_div is not None find the text
     if author_name_div is not None:
@@ -80,10 +80,10 @@ def get_review_info(review):
         if p.text == "Read full review":
             read_full_review_href = p.find('a')['href']
             external_url = read_full_review_href
-            # print("got a usable external url")
+            print("got a usable external url")
             break
     if external_url is None:
-        # print("No usable external URL found")
+        print("No usable external URL found")
         return
     # print(author_name, outlet_name, external_url, sep=" | ")
 
@@ -91,7 +91,7 @@ def get_review_info(review):
     if checkConnection(external_url):
         # print("Connection Succesful, appending list")
         reviewList.append([author_name, outlet_name, external_url])
-    # else:
+    else:
         # print("Connection Failed, Trying another URL")
 
 
@@ -99,7 +99,7 @@ def checkConnection(url):
     '''This function checks the connection status of the url
     if the connection is successful, it returns True
     else it returns False'''
-    # print("Checking connection status of", url)
+    print("Checking connection status of", url)
     try:
         r = requests.get(url)
         if r.status_code >= 200 and r.status_code < 400:
