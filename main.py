@@ -1,6 +1,7 @@
 import reviewCollector
 import csvCreator
 import gameListCreator
+import getRating
 
 if __name__ == "__main__":
     url = "https://opencritic.com/browse/all/all-time/num-reviews"
@@ -16,10 +17,15 @@ if __name__ == "__main__":
 
     count = 0
 
-    for obj in games:
-        print(games)
+    for i, obj in enumerate(games):
         gameName = obj['Name']
-        url = obj['url']
+        url = obj['URL']
+        print(url)
         print("Getting reviews for", gameName)
         reviewList = reviewCollector.main(url)
         csvCreator.main(gameName, reviewList)
+
+        getRating.process(gameName)
+
+        print("game:", i+1)
+        # break

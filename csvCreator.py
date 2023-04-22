@@ -45,9 +45,10 @@ def fileCreator(gameName, reviewList):
     fileName: the name of the file
     textBuffer: the text buffer
     '''
-    fileName = "data.csv"
-    print("in fileCreator function of csvCreator.py")
-    with open(fileName, "w", encoding='utf-8-sig', newline='') as file:
+    # print("in fileCreator function of csvCreator.py")
+
+    fileName = gameName + ".csv"
+    with open("gameReviews/" + fileName, "w", encoding='utf-8-sig', newline='') as file:
         header = ["Game", "Author", "Outlet", "URL", "Review"]
         csv_writer = writer(file)
         csv_writer.writerow(header)
@@ -55,6 +56,7 @@ def fileCreator(gameName, reviewList):
             textBuffer = get_soup(review[2])
             csv_writer.writerow(
                 [gameName, review[0], review[1], review[2], textBuffer])
+            print([gameName, review[0], review[1], review[2]])
     return
 
 
