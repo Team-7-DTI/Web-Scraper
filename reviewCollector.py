@@ -80,10 +80,10 @@ def get_review_info(review):
         if p.text == "Read full review":
             read_full_review_href = p.find('a')['href']
             external_url = read_full_review_href
-            print("got a usable external url")
+            # print("got a usable external url")
             break
     if external_url is None:
-        print("No usable external URL found")
+        # print("No usable external URL found")
         return
     # print(author_name, outlet_name, external_url, sep=" | ")
 
@@ -91,7 +91,7 @@ def get_review_info(review):
     if checkConnection(external_url):
         # print("Connection Succesful, appending list")
         reviewList.append([author_name, outlet_name, external_url])
-    else:
+    # else:
         # print("Connection Failed, Trying another URL")
 
 
@@ -99,7 +99,7 @@ def checkConnection(url):
     '''This function checks the connection status of the url
     if the connection is successful, it returns True
     else it returns False'''
-    print("Checking connection status of", url)
+    # print("Checking connection status of", url)
     try:
         r = requests.get(url)
         if r.status_code >= 200 and r.status_code < 400:
@@ -116,6 +116,8 @@ def main(url):
     of the form 'https://opencritic.com/game/1234/game_name/reviews')
     and returns the list of reviews.
     each item in the list is a list of the form [author_name, outlet_name, external_url]'''
+    if reviewList:
+        reviewList.clear()
     get_soup(url)
     print("Collected reviews")
     return reviewList

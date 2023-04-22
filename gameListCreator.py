@@ -15,11 +15,11 @@ def getSoup(url):
 def getGameRow(soup):
     games = []
     gameRows = soup.find_all('div', {'class': 'game-row'})
-    print("Getting game rows")
+    # print("Getting game rows")
     for gameRow in gameRows:
         gameInfo = getGameInfo(gameRow)
         if gameInfo is not None:
-            print("Appending game info")
+            # print("Appending game info")
             games.append(gameInfo)
     return games
 
@@ -30,7 +30,7 @@ def getGameInfo(game):
     if href is None:
         return None
 
-    print("Getting game info")
+    # print("Getting game info")
     gameUrl = "https://opencritic.com"+gameName.find('a')['href']+"/reviews"
     gameInfo = {'Name': gameName.text,
                 'URL': gameUrl
