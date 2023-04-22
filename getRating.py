@@ -5,7 +5,12 @@ from pymongo.server_api import ServerApi
 
 sentiment_pipeline = pipeline("sentiment-analysis")
 
-uri = "mongodb+srv://main:main123@cluster0.wda04dt.mongodb.net/?retryWrites=true&w=majority"
+USERNAME = ""
+PASSWORD = ""
+CLUSTERURL = ""
+
+uri = f"mongodb+srv://{USERNAME}:{PASSWORD}@{CLUSTERURL}/?retryWrites=true&w=majority"
+
 client = pymongo.MongoClient(uri, server_api=ServerApi('1'))
 
 db = client["Ratings"]
